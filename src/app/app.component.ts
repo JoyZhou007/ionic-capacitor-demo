@@ -1,6 +1,6 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { Plugins, Capacitor } from '@capacitor/core';
-const { AwesomePlugin } = Plugins;
+const { NFCPlugin } = Plugins;
 import { NFC, Ndef } from '@ionic-native/nfc/ngx';
 
 @Component({
@@ -8,32 +8,31 @@ import { NFC, Ndef } from '@ionic-native/nfc/ngx';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements AfterViewInit,OnInit {
   title = 'ionic-capacitor-demo';
 
   constructor(private nfc: NFC, private ndef: Ndef) {
     if (Capacitor.isPluginAvailable('NFC')) {
     }
     console.log(
-      'AwesomePluginPlugin',
-      AwesomePlugin,
-      Capacitor.isPluginAvailable('AwesomePlugin')
+      'NFCPlugin',
+      NFCPlugin,
+      Capacitor.isPluginAvailable('NFCPlugin')
     );
-    AwesomePlugin.echo({ value: 'teet' });
-    AwesomePlugin.testEvent();
-    AwesomePlugin.storeContact({
-      yourName: 'joy',
-      address: { province: 'jiangsu' },
-      isAwesome: true,
-      id: 1
-    });
+    NFCPlugin.echo({ value: 'teet' });
+    NFCPlugin.testEvent();
+  }
+  ngOnInit(): void {
   }
   
   test(){
-    AwesomePlugin.echo({ value: 'test' });
+    NFCPlugin.echo({ value: 'test' });
   }
   
   ngAfterViewInit(): void {
+    NFCPlugin.addListener("readNFC", (info: any) => {
+      console.log("readNFC was fired",info);
+    });
     window.addEventListener("myCustomEvent", function(e) {
       console.log("myCustomEvent was fired",e)
     });

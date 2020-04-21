@@ -9,7 +9,7 @@ android {
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
-    implementation project(':my-demo-cap-plugin')
+    implementation project(':cap-nfc-plugin')
 
 }
 

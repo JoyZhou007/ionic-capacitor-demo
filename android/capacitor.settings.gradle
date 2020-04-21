@@ -2,5 +2,5 @@
 include ':capacitor-android'
 project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/capacitor')
 
-include ':my-demo-cap-plugin'
-project(':my-demo-cap-plugin').projectDir = new File('../node_modules/my-demo-cap-plugin/android')
+include ':cap-nfc-plugin'
+project(':cap-nfc-plugin').projectDir = new File('../node_modules/cap-nfc-plugin/android')

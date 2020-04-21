@@ -4,9 +4,9 @@ import android.os.Bundle;
 
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.Plugin;
+import com.nfc.plugin.NFCPlugin;
 
 import java.util.ArrayList;
-import com.demo.plugin.AwesomePlugin;
 
 public class MainActivity extends BridgeActivity {
   @Override
@@ -17,7 +17,7 @@ public class MainActivity extends BridgeActivity {
     this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
       // Additional plugins you've installed go here
       // Ex: add(TotallyAwesomePlugin.class);
-      add(AwesomePlugin.class);
+      add(NFCPlugin.class);
     }});
   }
 }
