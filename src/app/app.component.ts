@@ -8,7 +8,7 @@ import { NFC, Ndef } from '@ionic-native/nfc/ngx';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements AfterViewInit,OnInit {
+export class AppComponent implements AfterViewInit, OnInit {
   title = 'ionic-capacitor-demo';
 
   constructor(private nfc: NFC, private ndef: Ndef) {
@@ -19,33 +19,55 @@ export class AppComponent implements AfterViewInit,OnInit {
       NFCPlugin,
       Capacitor.isPluginAvailable('NFCPlugin')
     );
-    NFCPlugin.echo({ value: 'teet' });
+    // NFCPlugin.echo({ value: 'teet' });
     NFCPlugin.testEvent();
   }
-  ngOnInit(): void {
-  }
-  
-  test(){
+  ngOnInit(): void {}
+
+  test() {
     NFCPlugin.echo({ value: 'test' });
+    NFCPlugin.sendTaskInfo({
+      taskInfo: {
+        id: 1,
+        taskNumber: '111111',
+        process: 'joy',
+      },
+    }).then((m) => {
+      console.log('send task info', m);
+    });
   }
-  
+
   ngAfterViewInit(): void {
-    NFCPlugin.addListener("readNFC", (info: any) => {
-      console.log("readNFC was fired",info);
+    NFCPlugin.addListener('readNFCResult', (info: any) => {
+      console.log('readNFCResult was fired', info);
     });
-    window.addEventListener("myCustomEvent", function(e) {
-      console.log("myCustomEvent was fired",e)
+    NFCPlugin.addListener('beginWriteNFC', (info: any) => {
+      console.log('beginWriteNFC was fired', info);
     });
-    this.nfc.addNdefListener(() => {
-      console.log('successfully attached ndef listener');
-    }, (err) => {
-      console.log('error attaching ndef listener', err);
-    }).subscribe((event) => {
-      console.log('received ndef message. the tag contains: ', event.tag);
-      console.log('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
-    
-      let message = this.ndef.textRecord('Hello world');
-      this.nfc.share([message]).then(()=> console.log('share sunccess')).catch(()=>console.log('share err'));
+    NFCPlugin.addListener('writeNFCResult', (info: any) => {
+      console.log('writeNFCResult was fired', info);
     });
+    window.addEventListener('myCustomEvent', function (e) {
+      console.log('myCustomEvent was fired', e);
+    });
+    this.nfc
+      .addNdefListener(
+        () => {
+          console.log('successfully attached ndef listener');
+        },
+        (err) => {
+          console.log('error attaching ndef listener', err);
+        }
+      )
+      .subscribe((event) => {
+        console.log('received ndef message. the tag contains: ', event.tag);
+        console.log('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
+
+        let message = this.ndef.textRecord('Hello world');
+        this.nfc
+          .share([message])
+          .then(() => console.log('share sunccess'))
+          .catch(() => console.log('share err'));
+      });
   }
 }
